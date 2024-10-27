@@ -1,5 +1,7 @@
 #!/bin/bash
 
+VERSION="0.1.0"
+
 # 定义脚本目录和目标安装目录
 SCRIPT_DIR="$(pwd)"
 INSTALL_DIR="/usr/local/bin"
@@ -61,6 +63,18 @@ list_scripts() {
     done
 }
 
+# 显示使用说明
+show_usage() {
+    echo "Script version: $VERSION"
+    echo "Usage: $0 { install | uninstall | update | list }"
+    echo ""
+    echo "Commands:"
+    echo "  install   - Install the bash scripts to $INSTALL_DIR."
+    echo "  uninstall - Remove the bash scripts from $INSTALL_DIR."
+    echo "  update    - Uninstall and then install the bash scripts again."
+    echo "  list      - List all bash scripts with their installation status."
+}
+
 # 处理传入的参数
 case "$1" in
     install)
@@ -76,7 +90,7 @@ case "$1" in
         list_scripts
         ;;
     *)
-        echo "Usage: $0 {install|uninstall|update|list}"
+        show_usage
         exit 1
         ;;
 esac
