@@ -40,7 +40,7 @@ read_dir()
             fi
         else
             slug="${file%%.*}"
-	    slug=$(echo "$slug" | tr '[:upper:]' '[:lower:]')
+            slug=$(echo "$slug" | tr '[:upper:]' '[:lower:]')
             filename="$1/$file"
             if [[ $file == *".md"* ]]; then
                 insert_slug $filename $slug
