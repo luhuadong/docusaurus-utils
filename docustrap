@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# 定义脚本目录和目标安装目录
+SCRIPT_DIR="$(pwd)"
+INSTALL_DIR="/usr/local/bin"
+
+# 安装脚本
+install_scripts() {
+    for script in "$SCRIPT_DIR"/*.sh; do
+        cp "$script" "$INSTALL_DIR/"
+        chmod +x "$INSTALL_DIR/$(basename "$script")"
+    done
+    echo "Scripts installed to $INSTALL_DIR."
+}
+
+# 卸载脚本
+uninstall_scripts() {
+    for script in "$SCRIPT_DIR"/*.sh; do
+        rm -f "$INSTALL_DIR/$(basename "$script")"
+    done
+    echo "Scripts uninstalled from $INSTALL_DIR."
+}
+
+# 更新脚本
+update_scripts() {
+    uninstall_scripts
+    install_scripts
+    echo "Scripts updated."
+}
+
+# 处理传入的参数
+case "$1" in
+    install)
+        install_scripts
+        ;;
+    uninstall)
+        uninstall_scripts
+        ;;
+    update)
+        update_scripts
+        ;;
+    *)
+        echo "Usage: $0 {install|uninstall|update}"
+        exit 1
+        ;;
+esac
