@@ -28,6 +28,28 @@ update_scripts() {
     echo "Scripts updated."
 }
 
+# 列出脚本及其安装状态
+list_scripts() {
+    printf "%-30s %-15s %-s\n" "Script Name" "Status" "Install Path"
+    printf "%-30s %-15s %-s\n" "------------" "--------" "------------"
+    
+    for script in "$SCRIPT_DIR"/*.sh; do
+        script_name="$(basename "$script")"
+        
+        if [[ -f "$INSTALL_DIR/$script_name" ]]; then
+            status="Installed"  # 状态文本
+            color="\e[32m$status\e[0m"  # 绿色
+            path="$INSTALL_DIR/$script_name"
+        else
+            status="Not installed"  # 状态文本
+            color="\e[31m$status\e[0m"  # 红色
+            path=""
+        fi
+        
+        printf "%-30s %-15s %-s\n" "$script_name" "$(echo -e "$color")" "$path"
+    done
+}
+
 # 处理传入的参数
 case "$1" in
     install)
@@ -39,8 +61,11 @@ case "$1" in
     update)
         update_scripts
         ;;
+    list)
+        list_scripts
+        ;;
     *)
-        echo "Usage: $0 {install|uninstall|update}"
+        echo "Usage: $0 {install|uninstall|update|list}"
         exit 1
         ;;
 esac
