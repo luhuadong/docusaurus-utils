@@ -4,8 +4,18 @@
 SCRIPT_DIR="$(pwd)"
 INSTALL_DIR="/usr/local/bin"
 
+# 检查是否需要 sudo 权限
+check_permissions() {
+    if [ ! -w "$INSTALL_DIR" ]; then
+        echo "You do not have permission to write to $INSTALL_DIR."
+        echo "Please run the script with sudo."
+        exit 1
+    fi
+}
+
 # 安装脚本
 install_scripts() {
+    check_permissions
     for script in "$SCRIPT_DIR"/*.sh; do
         cp "$script" "$INSTALL_DIR/"
         chmod +x "$INSTALL_DIR/$(basename "$script")"
@@ -15,6 +25,7 @@ install_scripts() {
 
 # 卸载脚本
 uninstall_scripts() {
+    check_permissions
     for script in "$SCRIPT_DIR"/*.sh; do
         rm -f "$INSTALL_DIR/$(basename "$script")"
     done
